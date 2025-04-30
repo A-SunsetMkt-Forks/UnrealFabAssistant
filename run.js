@@ -119,7 +119,7 @@
     }
 
     console.log("⭐ UnrealFabAssistant: Automatically add all free resources from Fab to your account")
-    console.log("⭐ Powerd by https://github.com/RyensX/UnrealFabAssistant")
+    console.log("⭐ Powered by https://github.com/RyensX/UnrealFabAssistant")
 
     // 获取cookies和xtoken
     console.log("-> Checking User Info...")
