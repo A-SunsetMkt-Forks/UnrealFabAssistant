@@ -21,7 +21,7 @@
             "method": "GET",
         })
         let data = await response.json()
-        let nextPage = data.cursors?.next ?? ""
+        let nextPage = data.cursors?.next ?? null
         let uidList = data.results?.map(result => result.uid) ?? []
         //console.log(data.cursors.previous)
         //console.log(`测试物品数据: ${JSON.stringify(data)}`)
@@ -134,39 +134,50 @@
     console.log(`csrftoken=${csrftoken}`)
 
     console.log("-> Start Process Items...")
-    let num = 0
+    let totalCount = 0
 
-    let urls = [
-        "https://www.fab.com/i/listings/search?channels=unreal-engine&is_free=1&sort_by=-createdAt",//UE
-        "https://www.fab.com/i/listings/search?channels=unity&is_free=1&sort_by=-createdAt", //Unity
-        "https://www.fab.com/i/listings/search?channels=uefn&is_free=1&sort_by=-createdAt", //UEFN
-        "https://www.fab.com/i/listings/search?currency=USD&seller=Quixel&sort_by=listingTypeWeight" //Quixel迁移
+    let urls = {
+        "UE": "https://www.fab.com/i/listings/search?channels=unreal-engine&is_free=1&sort_by=-createdAt",
+        "Unity": "https://www.fab.com/i/listings/search?channels=unity&is_free=1&sort_by=-createdAt",
+        "UEFN": "https://www.fab.com/i/listings/search?channels=uefn&is_free=1&sort_by=-createdAt",
+        "Quixel": "https://www.fab.com/i/listings/search?currency=USD&seller=Quixel&sort_by=listingTypeWeight"
         //这里如果仅仅只需要其中一种类型资源，比如只需要UE的，那可以只保留UE的链接
-    ]
-    for (url of urls) {
+    }
+    const mainTasks = Object.entries(urls).map(async ([name, url]) => {
+        console.log(`start by name=${name} url=${url}`)
         let nextPage = null
-        console.log(`start by url=${url}`)
+        let currentPageIndex = 1
+        let currentCount = 0
         do {
-            let page = await getItemsApi(cookies, nextPage, url)
-            console.log(`page=${page[0]} ,count=${page[1].length}`)
+            const page = await getItemsApi(cookies, nextPage, url)
+            console.log(`${name} page=${currentPageIndex++}(${page[0]}) ,count=${page[1].length}`)
             nextPage = page[0]
             //先获取许可状态
-            let states = await listingsStateApi(cookies, csrftoken, page[1])
-            //并发循环获取详情
-            page[1].forEach(async uid => {
-                //已入库的不再重复。不过如果需要自动更新许可类型（尽量换成专业版）可以把这个限制去掉）
+            const states = await listingsStateApi(cookies, csrftoken, page[1])
+            //获取详情
+            const tasks = page[1].map(async (uid) => {
+                //已入库的不再重复。不过如果需要自动更新许可类型（尽量换成专业版）可以把这个限制去掉
                 if (states[uid] == false) {
-                    let info = await listingsApi(cookies, csrftoken, uid)
-                    let [offerId, type, title] = info
+                    const info = await listingsApi(cookies, csrftoken, uid)
+                    const [offerId, type, title] = info
                     if (offerId != null) {
-                        console.log(`No.${++num} Item: name=${title} , offerId=${offerId}`)
+                        console.log(`No.${currentCount} ${name} Item: name=${title} , offerId=${offerId}`)
                         //入库
-                        let result = await addLibApi(cookies, csrftoken, uid, offerId)
-                        console.log(`addLib No.${num} ${title} result=${result} page=${page[0]} type=${type}`)
+                        const result = await addLibApi(cookies, csrftoken, uid, offerId)
+                        console.log(`addLib No.${currentCount} ${title} from ${name} result=${result} page=${page[0]} type=${type}`)
+                        if (result) {
+                            currentCount++
+                        }
                     }
                 }
             })
+            await Promise.all(tasks)
             //break //测试用
-        } while (nextPage != null)
-    }
+        } while (nextPage != null && nextPage != "")
+        console.log(`✅ ${name} done! ${currentCount} items added.`)
+        totalCount += currentCount
+    })
+    await Promise.all(mainTasks)
+
+    console.log(`\n✅ All done! ${totalCount} items added.`)
 })())
