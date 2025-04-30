@@ -11,6 +11,12 @@
 2. 点击F12打开调试工具并切换到控制台（Console）tab
 3. 复制粘贴下面代码回车等待结束
 ```javascript
+fetch('https://raw.githubusercontent.com/RyensX/UnrealFabAssistant/refs/heads/main/run.js').then(r=>r.text()).then(t=>document.head.append(Object.assign(document.createElement('script'),{textContent:t})))
+```
+
+如果无法访问魔法网络，可以用下方链接（更新可能有延迟）
+
+```javascript
 fetch('https://gh-proxy.com/raw.githubusercontent.com/RyensX/UnrealFabAssistant/refs/heads/main/run.js').then(r=>r.text()).then(t=>document.head.append(Object.assign(document.createElement('script'),{textContent:t})))
 ```
 
