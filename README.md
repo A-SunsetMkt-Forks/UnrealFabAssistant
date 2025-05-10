@@ -11,7 +11,7 @@
 #### 方式1
 1. 打开油猴设置-实用工具
 2. 在**从URL安装**中粘贴以下链接导入
-3. 打开Fab，右下角小窗点击Start，等待完成
+3. 打开 [Fab](https://www.fab.com/)，右下角小窗点击Start，等待完成
 ```javascript
 https://raw.githubusercontent.com/RyensX/UnrealFabAssistant/refs/heads/main/tampermonkey.js
 ```
@@ -22,7 +22,7 @@ https://gh-proxy.com/raw.githubusercontent.com/RyensX/UnrealFabAssistant/refs/he
 ```
 
 #### 方式2
-1. 打开 https://www.fab.com/ 并登录
+1. 打开 [Fab](https://www.fab.com/) 并登录
 2. 点击F12打开调试工具并切换到控制台（Console）tab
 3. 复制粘贴下面代码回车等待结束
 ```javascript
@@ -37,7 +37,7 @@ fetch('https://gh-proxy.com/raw.githubusercontent.com/RyensX/UnrealFabAssistant/
 
 #### 方式3
 1. 打开[run.js](/run.js)复制全部代码到剪切板
-2. 打开 https://www.fab.com/ 并登录
+2. 打开 [Fab](https://www.fab.com/) 并登录
 4. 点击F12打开调试工具并切换到控制台（Console）tab
 5. 粘贴刚才复制的代码到输入框，然后回车
 6. 等待日志打印结束即完成入库
