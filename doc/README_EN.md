@@ -26,7 +26,7 @@ fetch('https://raw.githubusercontent.com/RyensX/UnrealFabAssistant/refs/heads/ma
 
 #### Method 3
 1. Open [run.js](/run.js) and copy all the code to the clipboard.
-2. Open https://www.fab.com/ and login.
+2. Open [Fab](https://www.fab.com/) and login.
 4. Press F12 to open the debugger and switch to the Console tab.
 5. Paste the code you just copied into the input box and press Enter.
 6. Wait for the log to be printed  is complete.
