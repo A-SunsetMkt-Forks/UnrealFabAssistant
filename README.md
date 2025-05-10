@@ -1,5 +1,7 @@
 # UnrealFabAssistant
 
+简体中文 | [English](/doc/README_EN.md)
+
 把所有虚幻Fab商城免费资产一键入库（可隔一段时间跑一次，自动入库最新的免费资源）
 
 >Note: 代码仅在chrome上测试通过，最好直接使用chrome
