@@ -139,6 +139,7 @@
     console.log("-> Start Process Items...")
     let totalCount = 0
     const MAX_EMPTY_PAGE = 3
+    let countMap = {}
 
     let urls = {
         "UE": "https://www.fab.com/i/listings/search?channels=unreal-engine&is_free=1&sort_by=-createdAt",
@@ -183,8 +184,12 @@
         } while ((!fastMode || lastPage < MAX_EMPTY_PAGE) && nextPage != null && nextPage != "")
         console.log(`✅ ${name} done! ${currentCount} items added.`)
         totalCount += currentCount
+        countMap[name] = currentCount
     })
     await Promise.all(mainTasks)
 
-    console.log(`\n✅ All done! ${totalCount} items added.`)
+    let countDetail = totalCount > 0 ?
+        "(" + Object.entries(countMap).map(([key, value]) => `${key}:${value}`).join(" ") + ")"
+        : ""
+    console.log(`\n✅ All done! ${totalCount}${countDetail} items added.`)
 })(console.fastMode ?? true))
