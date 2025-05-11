@@ -41,4 +41,5 @@ fetch('https://raw.githubusercontent.com/RyensX/UnrealFabAssistant/refs/heads/ma
 
 ### Others
 1. If it helps you, please click ⭐ in the upper right corner to support it. Thank you for using it.
-1. If you reprint it, please indicate the original source https://github.com/RyensX/UnrealFabAssistant
+2. If you reprint it, please indicate the original source https://github.com/RyensX/UnrealFabAssistant
+3. The default fast mode searches for items in descending order of time. If there are no items that can be added for more than 3 pages, it is considered that there are no new items in the category. This may miss some old resources that are suddenly free, but it is convenient to frequently and quickly get free resources. If you need to turn off the fast mode, you can execute **window.fastMode=false** in the console before running the code

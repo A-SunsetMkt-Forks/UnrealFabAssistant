@@ -1,4 +1,4 @@
-((async () => {
+((async (fastMode /** 快速模式：以时间降序查询物品，若超过3页都没有能添加的物品，则认为该分类已经没有新增的 */) => {
 
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
@@ -138,6 +138,7 @@
 
     console.log("-> Start Process Items...")
     let totalCount = 0
+    const MAX_EMPTY_PAGE = 3
 
     let urls = {
         "UE": "https://www.fab.com/i/listings/search?channels=unreal-engine&is_free=1&sort_by=-createdAt",
@@ -151,7 +152,9 @@
         let nextPage = null
         let currentPageIndex = 1
         let currentCount = 0
+        let lastPage = 0
         do {
+            lastPage++
             const page = await getItemsApi(cookies, nextPage, url)
             console.log(`${name} page=${currentPageIndex++}(${page[0]}) ,count=${page[1].length}`)
             nextPage = page[0]
@@ -169,6 +172,7 @@
                         const result = await addLibApi(cookies, csrftoken, uid, offerId)
                         console.log(`addLib No.${currentCount} ${title} from ${name} result=${result} page=${page[0]} type=${type}`)
                         if (result) {
+                            lastPage = 0
                             currentCount++
                         }
                     }
@@ -176,11 +180,11 @@
             })
             await Promise.all(tasks)
             //break //测试用
-        } while (nextPage != null && nextPage != "")
+        } while ((!fastMode || lastPage < MAX_EMPTY_PAGE) && nextPage != null && nextPage != "")
         console.log(`✅ ${name} done! ${currentCount} items added.`)
         totalCount += currentCount
     })
     await Promise.all(mainTasks)
 
     console.log(`\n✅ All done! ${totalCount} items added.`)
-})())
+})(console.fastMode ?? true))

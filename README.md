@@ -52,4 +52,5 @@ fetch('https://gh-proxy.com/raw.githubusercontent.com/RyensX/UnrealFabAssistant/
 
 ### 其他
 1. 若有帮助到您，请点击右上角⭐支持一下，感谢使用
-1. 如果进行转载，请注明原出处 https://github.com/RyensX/UnrealFabAssistant
+2. 如果进行转载，请注明原出处 https://github.com/RyensX/UnrealFabAssistant
+3. 默认快速模式以时间降序查询物品，若超过3页都没有能添加的物品，则认为该分类已经没有新增的，这可能会错过一些旧的资源突然免费的情况，但是可以方便频繁快速白嫖资源。如果需要关闭快速模式，可以运行前控制台执行 **window.fastMode=false**
