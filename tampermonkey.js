@@ -4,7 +4,8 @@
 // @version      1.0
 // @description  UnrealFabAssistan油猴脚本
 // @author       https://github.com/RyensX/UnrealFabAssistant
-// @match        https://www.fab.com/*
+// @match        https://www.fab.com/
+// @match        https://www.fab.com/*-*/
 // @grant        none
 // @license      GPL-3.0
 // ==/UserScript==
