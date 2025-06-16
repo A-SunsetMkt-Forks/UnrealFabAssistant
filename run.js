@@ -76,15 +76,16 @@
         let offerId = null
         let type = null
         //尽量专业版
-        for (licenseInfo of data.licenses) {
-            if (licenseInfo.priceTier.price == 0.0) {
-                offerId = licenseInfo.offerId
-                type = licenseInfo.slug
-                if (licenseInfo.slug == "professional") {
-                    break
+        if (data.licenses)
+            for (licenseInfo of data.licenses) {
+                if (licenseInfo.priceTier.price == 0.0) {
+                    offerId = licenseInfo.offerId
+                    type = licenseInfo.slug
+                    if (licenseInfo.slug == "professional") {
+                        break
+                    }
                 }
             }
-        }
         //console.log(`测试数据: ${JSON.stringify(data)}`)
         return [offerId, type, title]
     }
@@ -179,14 +180,14 @@
                     }
                 }
             })
-            await Promise.all(tasks)
+            await Promise.allSettled(tasks)
             //break //测试用
         } while ((!fastMode || lastPage < MAX_EMPTY_PAGE) && nextPage != null && nextPage != "")
         console.log(`✅ ${name} done! ${currentCount} items added.`)
         totalCount += currentCount
         countMap[name] = currentCount
     })
-    await Promise.all(mainTasks)
+    await Promise.allSettled(mainTasks)
 
     let countDetail = totalCount > 0 ?
         "(" + Object.entries(countMap).map(([key, value]) => `${key}:${value}`).join(" ") + ")"
